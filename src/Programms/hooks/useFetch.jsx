@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 function useFetch() {
   const request = useCallback(
-    async (url, method = "GET", jwt_Token = null, body = null) => {
+    async (url, method = "GET", body = null, jwt_Token = null) => {
       try {
         const response = await fetch("http://localhost:5000/" + url, {
           body,

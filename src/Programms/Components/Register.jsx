@@ -6,6 +6,29 @@ function Register() {
   const request = useFetch();
   // Use Statelar
   const [isLogin, setIslogin] = useState(false);
+  const [R_name, set_R_name] = useState("");
+  const [R_phoneNumber, set_R_phoneNumber] = useState("");
+  const [R_username, set_R_username] = useState("");
+  const [R_password, set_R_password] = useState("");
+  const [R_Rpassword, set_R_Rpassword] = useState("");
+
+  const register_send = () => {
+    if (
+      (R_name.length >= 3 && R_name.length <= 15) ||
+      (R_username.length >= 3 && R_username.length <= 15)
+    ) {
+      const send_user = {
+        name: R_name,
+        phoneNumber: R_phoneNumber,
+        username: R_username,
+        password: R_password,
+        Rpassword: R_Rpassword,
+      };
+      request("users/register", "POST", JSON.stringify(send_user))
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
+    }
+  };
 
   return (
     <div className="relative min-h-screen flex ">
@@ -129,6 +152,8 @@ function Register() {
                     Name
                   </label>
                   <input
+                    onChange={(e) => set_R_name(e.target.value)}
+                    value={R_name}
                     className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
                     type="text"
                     placeholder="Enter your name"
@@ -142,6 +167,8 @@ function Register() {
                     Username
                   </label>
                   <input
+                    onChange={(e) => set_R_username(e.target.value)}
+                    value={R_username}
                     className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
                     type="text"
                     placeholder="Enter your username"
@@ -155,9 +182,11 @@ function Register() {
                     Phone number
                   </label>
                   <input
+                    onChange={(e) => set_R_phoneNumber(e.target.value)}
+                    value={R_phoneNumber}
                     className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
                     type="tel"
-                    placeholder="Enter your phone number"
+                    placeholder="+998915625677"
                   />
                 </div>
                 {/* password */}
@@ -166,9 +195,11 @@ function Register() {
                     Password
                   </label>
                   <input
+                    onChange={(e) => set_R_password(e.target.value)}
+                    value={R_password}
                     className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Password is min 5 max 10"
                   />
                 </div>
                 {/* Repeat password */}
@@ -177,6 +208,8 @@ function Register() {
                     Repeat Password
                   </label>
                   <input
+                    onChange={(e) => set_R_Rpassword(e.target.value)}
+                    value={R_Rpassword}
                     className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="password"
                     placeholder="Repeat your password"
@@ -184,12 +217,16 @@ function Register() {
                 </div>
                 {/* the end */}
                 <div>
-                  <button className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
+                  <button
+                    onClick={() => register_send()}
+                    className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                  >
                     Sign Up
                   </button>
                 </div>
                 <p className="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
                   <span>Do you have an account ?</span>
+
                   <a
                     href="#"
                     onClick={() => setIslogin(true)}
@@ -209,3 +246,5 @@ function Register() {
 }
 
 export default Register;
+
+// https://tailwindcomponents.com/search?query=Login
