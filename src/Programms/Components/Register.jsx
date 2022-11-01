@@ -1,37 +1,101 @@
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
+// styles
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/register.css";
 
 function Register() {
   const request = useFetch();
   // Use Statelar
   const [isLogin, setIslogin] = useState(false);
+  // register state
   const [R_name, set_R_name] = useState("");
   const [R_phoneNumber, set_R_phoneNumber] = useState("");
   const [R_username, set_R_username] = useState("");
   const [R_password, set_R_password] = useState("");
   const [R_Rpassword, set_R_Rpassword] = useState("");
+  // login state
+  const [L_password, set_L_password] = useState("");
+  const [L_username, set_L_username] = useState("");
 
-  const register_send = () => {
-    if (
-      (R_name.length >= 3 && R_name.length <= 15) ||
-      (R_username.length >= 3 && R_username.length <= 15)
-    ) {
-      const send_user = {
-        name: R_name,
-        phoneNumber: R_phoneNumber,
-        username: R_username,
-        password: R_password,
-        Rpassword: R_Rpassword,
-      };
-      request("users/register", "POST", JSON.stringify(send_user))
-        .then((res) => console.log(res))
-        .catch((e) => console.log(e));
+  const register_login_send = () => {
+    if (isLogin) {
+      // Login send object
+      if (L_username.length && L_password.length) {
+        const send_user_login = {
+          password: L_password,
+          username: L_username,
+        };
+
+        request("users/login", "POST", JSON.stringify(send_user_login))
+          .then((res) => {
+            if (res.token) {
+              localStorage.setItem("user", JSON.stringify(res));
+            } else {
+              toast.error(res.errMsg);
+            }
+          })
+          .catch((e) => {
+            toast.error(e);
+          });
+      } else {
+        toast.error("Malumotlarni to'ldiring");
+      }
+    } else {
+      // Register send object
+      if (
+        R_name.length &&
+        R_phoneNumber.length &&
+        R_username.length &&
+        R_password.length &&
+        R_Rpassword.length
+      ) {
+        const regex =
+          /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+        const send_user = {
+          name: R_name,
+          phoneNumber: R_phoneNumber.replace(regex, ""),
+          username: R_username.replace(regex, ""),
+          password: R_password.replace(regex, ""),
+          Rpassword: R_Rpassword.replace(regex, ""),
+        };
+        request("users/register", "POST", JSON.stringify(send_user))
+          .then((res) => {
+            if (res.sucsMsg) {
+              toast.success(res.sucsMsg);
+              setIslogin(true);
+            } else {
+              toast.error(res.errMsg);
+            }
+          })
+          .catch((e) => {
+            toast.error(e);
+          });
+      } else {
+        toast.error("Malumotlarni to'ldiring");
+      }
     }
   };
 
   return (
     <div className="relative min-h-screen flex ">
+      {/* toast conatiner */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
+      {/* the end */}
       <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
         <div
           className="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden bg-purple-900 text-white bg-no-repeat bg-cover relative"
@@ -90,6 +154,8 @@ function Register() {
                     className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
                     type="text"
                     placeholder="Enter your username"
+                    onChange={(e) => set_L_username(e.target.value)}
+                    value={L_username}
                   />
                 </div>
                 <div className="mt-8 content-center">
@@ -100,6 +166,8 @@ function Register() {
                     className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="password"
                     placeholder="Enter your password"
+                    onChange={(e) => set_L_password(e.target.value)}
+                    value={L_password}
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -125,7 +193,7 @@ function Register() {
                 </div>
                 <div>
                   <button
-                    type="submit"
+                    onClick={() => register_login_send()}
                     className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
                   >
                     Sign in
@@ -218,7 +286,7 @@ function Register() {
                 {/* the end */}
                 <div>
                   <button
-                    onClick={() => register_send()}
+                    onClick={() => register_login_send()}
                     className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
                   >
                     Sign Up
