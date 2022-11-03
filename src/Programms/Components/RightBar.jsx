@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
 // reducer
 import { clearUser } from "../reducer/userReduser";
 import { useDispatch } from "react-redux";
@@ -10,14 +12,20 @@ import "./styles/rightBar.css";
 function RightBar() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const request = useFetch();
   // states
   const user = useSelector((state) => state.user);
+  const [search, setSearch] = useState("");
 
   const leaveImage = () => {
     dispatch(clearUser());
     localStorage.removeItem("user");
     history.push("/");
   };
+
+  useEffect(() => {
+    request(`users/search?username=${search}`, "POST", null, );
+  }, [search]);
 
   return (
     <div className="h-full w-screen flex flex-row">
@@ -70,9 +78,12 @@ function RightBar() {
               </p>
             </div>
           </div>
+
           <div className="flex border-2 border-gray-200 rounded-md focus-within:ring-2 ring-teal-500">
             <input
               type="text"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
               className="w-full rounded-tl-md rounded-bl-md px-2 py-3 text-sm text-gray-600 focus:outline-none"
               placeholder="Search"
             />
@@ -91,7 +102,21 @@ function RightBar() {
               </svg>
             </button>
           </div>
+
           <div id="menu" className="flex flex-col space-y-2">
+            {/* Search results */}
+            <a className="cursor-pointer text-sm font-medium text-gray-700 pt-2 pb-4 px-2 mb-2 border-b-2 hover:bg-lime-400 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+              <svg
+                className="w-6 h-6 fill-current inline-block"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+              </svg>
+              <span className>Products</span>
+            </a>
+            {/* The end */}
             <a
               onClick={() => leaveImage()}
               className="cursor-pointer text-sm font-medium text-gray-700 py-2 px-2 hover:bg-red-600 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
