@@ -1,8 +1,11 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
 import RightBar from "./Components/RightBar";
+// reducer
+import { useSelector } from "react-redux";
 
-function Messenger(props) {
+function Messenger() {
+  const user = useSelector((state) => state.user);
   return (
     <div className="grid grid-cols-4 gap-x-0 bg-gray-50">
       <div className="fixed">

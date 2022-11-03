@@ -1,9 +1,9 @@
-import AppClone from "./Programms/AppClone";
+import Redux from "./Programms/Redux";
 
 function App() {
   return (
     <div className="App">
-      <AppClone />
+      <Redux />
     </div>
   );
 }

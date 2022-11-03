@@ -1,7 +1,24 @@
-import React from "react";
+import { useHistory } from "react-router-dom";
+// reducer
+import { clearUser } from "../reducer/userReduser";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+// styles vs logos
+import LogOut from "../logo/sign-out-icon.png";
 import "./styles/rightBar.css";
 
 function RightBar() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  // states
+  const user = useSelector((state) => state.user);
+
+  const leaveImage = () => {
+    dispatch(clearUser());
+    localStorage.removeItem("user");
+    history.push("/");
+  };
+
   return (
     <div className="h-full w-screen flex flex-row">
       <button className="p-2 border-2 bg-white rounded-md border-gray-200 shadow-lg text-gray-500 focus:bg-teal-500 focus:outline-none focus:text-white absolute top-0 left-0 sm:hidden">
@@ -31,16 +48,26 @@ function RightBar() {
             BeshkentGram
           </h1>
           <div id="profile" className="space-y-2">
-            <img
-              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-              alt="Avatar user"
-              className="w-16 md:w-24 rounded-full mx-auto"
-            />
+            {user.image ? (
+              <img
+                src={user.image}
+                alt="Avatar user"
+                className="w-24 h-24 md:w-24 rounded-full mx-auto"
+              />
+            ) : (
+              <img
+                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                alt="Avatar user"
+                className="w-16 md:w-24 rounded-full mx-auto"
+              />
+            )}
             <div>
               <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
-                Ibrokhim Jo'rayev
+                {user.name}
               </h2>
-              <p className="text-xs text-gray-500 text-center">idasturjs</p>
+              <p className="text-xs text-gray-500 text-center">
+                Username: {user.username}
+              </p>
             </div>
           </div>
           <div className="flex border-2 border-gray-200 rounded-md focus-within:ring-2 ring-teal-500">
@@ -66,22 +93,19 @@ function RightBar() {
           </div>
           <div id="menu" className="flex flex-col space-y-2">
             <a
-              href
-              className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
+              onClick={() => leaveImage()}
+              className="cursor-pointer text-sm font-medium text-gray-700 py-2 px-2 hover:bg-red-600 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
             >
-              <svg
-                className="w-6 h-6 fill-current inline-block"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-              <span className>Dashboard</span>
+              <img
+                className="w-6 h-6 fill-current inline-block mr-1"
+                src={LogOut}
+                alt="leave"
+              />
+              <span className>Leave</span>
             </a>
             <a
               href
-              className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
+              className="cursor-pointer text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
             >
               <svg
                 className="w-6 h-6 fill-current inline-block"

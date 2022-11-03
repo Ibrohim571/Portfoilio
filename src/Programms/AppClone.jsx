@@ -3,20 +3,25 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Register from "./Components/Register";
 import Messenger from "./Messenger";
+// reducer
+import { newUser } from "./reducer/userReduser";
+import { useDispatch } from "react-redux";
 
 function Routing() {
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      console.log("Nimadir");
+      dispatch(newUser(user.user));
+      history.push("/message");
     } else {
       history.push("/");
     }
   }, []);
   return (
     <Switch>
-      <Route path="/" component={Register} />
+      <Route path="/" exact component={Register} />
       <Route path="/message" component={Messenger} />
     </Switch>
   );

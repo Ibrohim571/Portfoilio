@@ -1,5 +1,9 @@
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
+import { useHistory } from "react-router-dom";
+// reduser
+import { newUser } from "../reducer/userReduser";
+import { useDispatch } from "react-redux";
 // styles
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +11,8 @@ import "./styles/register.css";
 
 function Register() {
   const request = useFetch();
+  const dispatch = useDispatch();
+  const history = useHistory();
   // Use Statelar
   const [isLogin, setIslogin] = useState(false);
   // register state
@@ -19,6 +25,7 @@ function Register() {
   const [L_password, set_L_password] = useState("");
   const [L_username, set_L_username] = useState("");
 
+  // Register function
   const register_login_send = () => {
     if (isLogin) {
       // Login send object
@@ -32,6 +39,8 @@ function Register() {
           .then((res) => {
             if (res.token) {
               localStorage.setItem("user", JSON.stringify(res));
+              dispatch(newUser(res.user));
+              history.push("/message");
             } else {
               toast.error(res.errMsg);
             }
@@ -78,12 +87,17 @@ function Register() {
     }
   };
 
+  const keyBoard = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") register_login_send();
+  };
+
   return (
-    <div className="relative min-h-screen flex ">
+    <div className="relative min-h-screen flex">
       {/* toast conatiner */}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -93,8 +107,6 @@ function Register() {
         pauseOnHover
         theme="light"
       />
-      {/* Same as */}
-      <ToastContainer />
       {/* the end */}
       <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
         <div
@@ -131,7 +143,10 @@ function Register() {
             <li />
           </ul>
         </div>
-        <div className=" p-4 md:flex md:items-center md:justify-center md:w-1/2 md:h-full md:p-10 sm:w-full sm:p-1  xl:w-2/5 lg:p-14 bg-white">
+        <form
+          onSubmit={(e) => keyBoard(e)}
+          className=" p-4 md:flex md:items-center md:justify-center md:w-1/2 md:h-full md:p-10 sm:w-full sm:p-1  xl:w-2/5 lg:p-14 bg-white"
+        >
           <div className="max-w-md w-full space-y-8">
             <div className="text-center">
               <h3 className="mt-2 text-2xl font-bold text-gray-700">
@@ -307,7 +322,7 @@ function Register() {
             )}
             {/* the end */}
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
