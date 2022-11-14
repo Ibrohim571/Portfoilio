@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import Register from "./Components/Register";
 import Messenger from "./Messenger";
 // reducer
-import { newUser } from "./reducer/userReduser";
+import { newUser, newToken } from "./reducer/userReduser";
 import { useDispatch } from "react-redux";
 
 function Routing() {
@@ -14,6 +14,7 @@ function Routing() {
     let user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       dispatch(newUser(user.user));
+      dispatch(newToken(user.token));
       history.push("/message");
     } else {
       history.push("/");

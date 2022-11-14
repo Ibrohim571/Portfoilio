@@ -15,7 +15,9 @@ function RightBar() {
   const request = useFetch();
   // states
   const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
   const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   const leaveImage = () => {
     dispatch(clearUser());
@@ -24,7 +26,20 @@ function RightBar() {
   };
 
   useEffect(() => {
-    request(`users/search?username=${search}`, "POST", null, );
+    if (search) {
+      request(`users/search?username=${search}`, "POST", null, token).then(
+        (res) => {
+          if (res.findUsers) {
+            console.log(res);
+            setSearchResult(res.findUsers);
+          } else {
+            setSearchResult([]);
+          }
+        }
+      );
+    } else {
+      setSearchResult([]);
+    }
   }, [search]);
 
   return (
@@ -60,7 +75,7 @@ function RightBar() {
               <img
                 src={user.image}
                 alt="Avatar user"
-                className="w-24 h-24 md:w-24 rounded-full mx-auto"
+                className="w-24 h-24 md:w-24 rounded-full mx-auto shadow-lg"
               />
             ) : (
               <img
@@ -105,17 +120,31 @@ function RightBar() {
 
           <div id="menu" className="flex flex-col space-y-2">
             {/* Search results */}
-            <a className="cursor-pointer text-sm font-medium text-gray-700 pt-2 pb-4 px-2 mb-2 border-b-2 hover:bg-lime-400 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
-              <svg
-                className="w-6 h-6 fill-current inline-block"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+            {searchResult.map((item, index) => (
+              <a
+                className="cursor-pointer text-sm font-medium text-gray-700 pt-2 pb-4 px-2 mb-2 border-b-2 hover:bg-lime-400 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
+                key={index}
               >
-                <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
-              </svg>
-              <span className>Products</span>
-            </a>
+                {/* className="w-6 h-6 fill-current inline-block" */}
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt="Avatar user"
+                    className="w-8 h-8 mr-2 rounded-full fill-current inline-block"
+                  />
+                ) : (
+                  <img
+                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                    alt="Avatar user"
+                    className="w-8 h-8 mr-2 rounded-full fill-current inline-block"
+                  />
+                )}
+                <span className>{item.name}</span>
+                <p className="text-xs text-gray-500 ml-9">
+                  Username: {item.username}
+                </p>
+              </a>
+            ))}
             {/* The end */}
             <a
               onClick={() => leaveImage()}

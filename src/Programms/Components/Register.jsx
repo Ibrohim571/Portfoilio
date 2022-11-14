@@ -2,7 +2,7 @@ import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { useHistory } from "react-router-dom";
 // reduser
-import { newUser } from "../reducer/userReduser";
+import { newUser, newToken } from "../reducer/userReduser";
 import { useDispatch } from "react-redux";
 // styles
 import { ToastContainer, toast } from "react-toastify";
@@ -40,6 +40,7 @@ function Register() {
             if (res.token) {
               localStorage.setItem("user", JSON.stringify(res));
               dispatch(newUser(res.user));
+              // dispatch(newToken(res.token));
               history.push("/message");
             } else {
               toast.error(res.errMsg);
