@@ -1,9 +1,10 @@
-import Redux from "./Programms/Redux";
+// Components
+import AppPortfoilioClone from "./Portfoilio/AppPortfoilioClone";
 
 function App() {
   return (
     <div className="App">
-      <Redux />
+      <AppPortfoilioClone />
     </div>
   );
 }
