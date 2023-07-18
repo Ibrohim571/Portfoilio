@@ -1,7 +1,7 @@
 import "./servises.scss";
 
 function Servises() {
-  return <div>Servises</div>;
+  return <section id="services">Servises</section>;
 }
 
 export default Servises;

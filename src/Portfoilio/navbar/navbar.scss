@@ -1,0 +1,34 @@
+$color-white: #ffffff;
+$color-light: #f9a2e6;
+$color-bg: #1f1f38;
+
+nav {
+  display: flex;
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  gap: 0.8rem;
+  transform: translate(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  width: max-content;
+  z-index: 2;
+  padding: 0.7rem 1.7rem;
+  border-radius: 3rem;
+  backdrop-filter: blur(15px);
+}
+
+nav a {
+  background: transparent;
+  padding: 0.9rem;
+  border-radius: 50%;
+  color: $color-white;
+  font-size: 1.1rem;
+  display: flex;
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  &.active {
+    background: $color-bg;
+    color: $color-light;
+  }
+}

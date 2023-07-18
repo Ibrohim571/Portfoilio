@@ -17,6 +17,7 @@ $color-bg: #1f1f38;
 $color-bg-variant: #2c2c6c;
 $color-primary: #4d5bff;
 $color-primary-variant: rgba(77, 181, 255, 0.4);
+$color-bg-variant: rgba(26, 136, 215, 0.4);
 $color-white: #ffffff;
 $color-white-variant: rgba(255, 255, 255, 0.6);
 
@@ -27,7 +28,7 @@ $container-width-ms: 90%;
 $transition: all 400ms ease;
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; // bilmayman scroll bo'lganda effect bilan tushirib chiqaradi
 }
 
 ::-webkit-scrollbar {
@@ -62,6 +63,7 @@ h1 {
 }
 
 section {
+  height: 100vh;
   margin-top: 8rem;
 }
 
@@ -81,21 +83,58 @@ section > h2 {
 }
 
 a {
-  color: $color-primary;
+  color: $color-white-variant;
   transition: $transition;
-}
-
-a:hover {
-  color: $color-white;
+  &:hover {
+    color: $color-bg-variant;
+  }
 }
 
 .btn {
   cursor: pointer;
-  width: max-content;
+  width: max-content; // bilmaychiydim
   display: inline-block;
   color: $color-primary;
   padding: 0.75rem 1.2rem;
   border-radius: 0.4rem;
   border: 1px solid $color-primary;
   transition: $transition;
+
+  &:hover {
+    background: $color-white;
+    color: $color-bg;
+    border-color: transparent;
+  }
+}
+
+.btn-primary {
+  background: $color-primary;
+  color: $color-bg;
+}
+
+img {
+  display: block;
+  width: 100%;
+  object-fit: cover; // bilmaychiydim
+}
+
+// ===================MEDIA QUERIES (Medium devises) ================
+
+@media screen and (max-width: 1024px) {
+  .container {
+    width: $container-width-md;
+  }
+  section {
+    margin-top: 6rem;
+    height: 100vh;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: $container-width-ms;
+  }
+  section > h2 {
+    margin-top: 2rem;
+  }
 }

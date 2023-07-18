@@ -1,7 +1,7 @@
 import "./portfoilio.scss";
 
 function Portfoilio() {
-  return <div>Portfoilio</div>;
+  return <section id="portfoilio">Portfoilio</section>;
 }
 
 export default Portfoilio;
