@@ -23,7 +23,7 @@ $color-white-variant: rgba(255, 255, 255, 0.6);
 
 $container-width-lg: 75%;
 $container-width-md: 86%;
-$container-width-ms: 90%;
+$container-width-sm: 90%;
 
 $transition: all 400ms ease;
 
@@ -79,7 +79,7 @@ section > h2 {
 }
 
 .text-light {
-  color: $color-white;
+  color: $color-white-variant;
 }
 
 a {
@@ -132,7 +132,7 @@ img {
 
 @media screen and (max-width: 600px) {
   .container {
-    width: $container-width-ms;
+    width: $container-width-sm;
   }
   section > h2 {
     margin-top: 2rem;

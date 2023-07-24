@@ -1,0 +1,76 @@
+$color-bg-variant: rgba(26, 136, 215, 0.4);
+$color-primary-variant: rgba(77, 181, 255, 0.4);
+$color-primary: #4d5bff;
+$color-white-variant: rgba(255, 255, 255, 0.6);
+$transition: all 400ms ease;
+
+.experience__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.experience__container > div {
+  background-color: $color-bg-variant;
+  padding: 2.4rem 5rem;
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  transition: $transition;
+
+  &:hover {
+    background: transparent;
+    border-color: $color-primary-variant;
+  }
+
+  h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: $color-primary;
+  }
+
+  .experience__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 2rem;
+
+    .experience__details {
+      display: flex;
+      gap: 1rem;
+      div small {
+        font-size: 0.7rem;
+      }
+
+      .experience__details-icon {
+        margin-top: 6px;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .experience__container {
+    grid-template-columns: 1fr;
+
+    div {
+      width: 80%;
+      padding: 2rem;
+      margin: 0 auto;
+    }
+  }
+
+  .experience__content {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .experience__container {
+    gap: 1rem;
+  }
+
+  .experience__container div {
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+}
